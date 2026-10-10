@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maurício Araújo | Desenvolvedor em formação</title>
+  <meta name="description" content="Portfólio de Maurício de Sena de Araújo, estudante do Técnico em Informática no IFCE Campus Fortaleza.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --azul: #0a2bbd;
+      --azul-escuro: #071a80;
+      --ciano: #17b8e8;
+      --branco: #ffffff;
+      --texto-claro: #cfd9ff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: var(--azul);
+      color: var(--branco);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    button { font: inherit; background: none; border: 0; color: inherit; cursor: pointer; }
+
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* Barra de navegação fixa no topo */
+    .topo {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 70px;
+      background: var(--azul);
+      z-index: 50;
+    }
+    .topo .wrap {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      border: 1.5px solid var(--ciano);
+      border-radius: 999px;
+      padding: 6px 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .menu { display: flex; gap: 34px; font-size: 15px; font-weight: 600; }
+    .menu a { padding: 4px 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
+    .menu a:hover { color: var(--ciano); border-color: var(--ciano); }
+
+    /* Menu hambúrguer para mobile */
+    .hamb { display: none; width: 40px; height: 40px; position: relative; }
+    .hamb i, .hamb i::before, .hamb i::after {
+      content: ""; position: absolute; left: 8px; width: 24px; height: 2px; background: #fff;
+      transition: transform .25s, top .25s;
+    }
+    .hamb i { top: 19px; }
+    .hamb i::before { top: -7px; left: 0; }
+    .hamb i::after { top: 7px; left: 0; }
+    .hamb.aberto i { background: transparent; }
+    .hamb.aberto i::before { top: 0; transform: rotate(45deg); }
+    .hamb.aberto i::after { top: 0; transform: rotate(-45deg); }
+
+    /* Seção principal de boas-vindas */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .padrao {
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 38%;
+      background-color: var(--azul);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M60 0A60 60 0 0 1 0 60' stroke='%2317b8e8' stroke-width='24' fill='none'/%3E%3Cpath d='M60 120A60 60 0 0 1 120 60' stroke='%23ffffff' stroke-width='24' fill='none'/%3E%3Cpath d='M60 0A60 60 0 0 0 120 60' stroke='%23071a80' stroke-width='24' fill='none'/%3E%3Cpath d='M0 60A60 60 0 0 0 60 120' stroke='%2317b8e8' stroke-width='24' fill='none'/%3E%3C/svg%3E");
+      background-size: 120px 120px;
+    }
+
+    .hero .wrap { position: relative; width: 100%; padding-top: 70px; }
+    .hero-texto { max-width: 470px; position: relative; z-index: 2; }
+
+    .hero h1 { font-size: 46px; line-height: 1.15; font-weight: 700; margin-bottom: 20px; }
+    .hero h1 span { color: var(--ciano); display: block; }
+    .hero p { font-size: 18px; color: var(--texto-claro); margin-bottom: 8px; }
+    .hero .inst { font-size: 15px; margin-bottom: 32px; }
+    .hero .inst b { color: #fff; }
+
+    .botoes { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--ciano); color: #fff;
+      font-size: 14px; font-weight: 600;
+      padding: 10px 24px; border-radius: 999px;
+      border: 2px solid var(--ciano);
+      transition: background .2s, color .2s, transform .2s;
+    }
+    .btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .btn:hover { transform: translateY(-2px); background: #fff; border-color: #fff; color: var(--azul); }
+    .btn.vazado { background: transparent; }
+    .btn.vazado:hover { background: #fff; }
+
+    /* Janela simulando editor de código */
+    .janela {
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      width: 400px;
+      transform: translateY(-46%) rotate(-6deg);
+      background: #f4f7ff;
+      border-radius: 14px;
+      box-shadow: 0 25px 50px rgba(3, 10, 70, .55);
+      overflow: hidden;
+      z-index: 2;
+    }
+    .janela .barra { background: var(--azul-escuro); padding: 10px 14px; display: flex; gap: 7px; }
+    .janela .barra i { width: 10px; height: 10px; border-radius: 50%; background: var(--ciano); opacity: .8; }
+    .janela pre {
+      font-family: Consolas, 'Courier New', monospace;
+      font-size: 14px;
+      color: #1b2559;
+      padding: 22px 24px;
+      line-height: 1.8;
+    }
+    .janela .k { color: #0a2bbd; font-weight: bold; }
+    .janela .s { color: #0b8fb8; }
+    .janela .c { color: #8a94c4; }
+
+    /* Estilização geral das seções */
+    section { padding: 90px 0; }
+    .escura { background: var(--azul-escuro); }
+    .clara { background: #f2f5ff; color: #12205f; }
+
+    h2 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+    h2 em { font-style: normal; color: var(--ciano); }
+    .clara h2 em { color: var(--azul); }
+    .intro { color: var(--texto-claro); margin-bottom: 40px; max-width: 540px; }
+    .clara .intro { color: #4a5894; }
+
+    /* Configuração do grid da seção Sobre */
+    .sobre-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 56px; align-items: start; }
+    .sobre-grid p { color: var(--texto-claro); margin-bottom: 16px; }
+    .sobre-foto-col { display: flex; flex-direction: column; gap: 24px; align-items: center; }
+    .foto-perfil {
+      width: 100%;
+      max-width: 260px;
+      border-radius: 20px;
+      border: 3px solid var(--ciano);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      object-fit: cover;
+    }
+    .dados { border-left: 3px solid var(--ciano); padding-left: 24px; width: 100%; }
+    .dados li { padding: 10px 0; font-size: 15px; }
+    .dados small { display: block; color: var(--ciano); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+
+    /* Tecnologias e conhecimentos */
+    .tec-linha {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .18);
+      align-items: center;
+    }
+    .tec-linha:first-of-type { border-top: 1px solid rgba(255, 255, 255, .18); }
+    .tec-linha h3 { font-size: 17px; color: var(--ciano); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chips span {
+      font-size: 14px; font-weight: 500;
+      padding: 5px 16px; border-radius: 999px;
+      background: rgba(255, 255, 255, .1);
+      transition: background .2s, color .2s;
+    }
+    .chips span:hover { background: #fff; color: var(--azul); }
+    .soft { margin-top: 30px; color: var(--texto-claro); font-size: 15px; }
+    .soft b { color: #fff; }
+
+    /* Certificados obtidos */
+    .cert-topo { margin-bottom: 28px; }
+    .cert-lista { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; counter-reset: c; }
+    .cert-lista li {
+      counter-increment: c;
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px 20px 18px 66px;
+      position: relative;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(10, 43, 189, .08);
+      transition: transform .2s;
+    }
+    .cert-lista li:hover { transform: translateY(-3px); }
+    .cert-lista li::before {
+      content: counter(c);
+      position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--azul); color: #fff;
+      display: grid; place-items: center; font-size: 14px; font-weight: 600;
+    }
+    .cert-lista small { display: block; font-weight: 400; color: #6a76ab; font-size: 13px; }
+
+    /* Cards de projetos do portfólio */
+    .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .proj {
+      background: var(--azul);
+      border-radius: 14px;
+      padding: 26px;
+      display: flex; flex-direction: column;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .proj:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(0, 0, 0, .3); }
+    .proj h3 { font-size: 19px; margin-bottom: 10px; }
+    .proj p { color: var(--texto-claro); font-size: 14px; flex: 1; margin-bottom: 16px; }
+    .proj .tags { font-size: 13px; color: var(--ciano); font-weight: 600; margin-bottom: 18px; }
+    .proj a { font-size: 14px; font-weight: 600; border-bottom: 2px solid var(--ciano); align-self: flex-start; }
+    .proj a:hover { color: var(--ciano); }
+    .ver-todos { margin-top: 36px; }
+
+    /* Área de contato */
+    .contato { text-align: center; }
+    .contato .intro { margin-left: auto; margin-right: auto; }
+    .contato .botoes { justify-content: center; }
+
+    /* Rodapé da página */
+    footer { background: var(--azul-escuro); text-align: center; padding: 22px 0; font-size: 13px; color: var(--texto-claro); border-top: 1px solid rgba(255,255,255,.12); }
+
+    /* Responsividade para telas menores */
+    @media (max-width: 960px) {
+      .janela { width: 320px; right: 10px; }
+      .hero h1 { font-size: 38px; }
+    }
+
+    @media (max-width: 800px) {
+      .hamb { display: block; }
+      .menu {
+        position: fixed; top: 70px; left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: var(--azul-escuro);
+        max-height: 0; overflow: hidden; transition: max-height .3s;
+      }
+      .menu.aberto { max-height: 320px; }
+      .menu a { display: block; padding: 15px 24px; border: 0; }
+
+      .hero { display: block; padding-bottom: 0; }
+      .hero .wrap { padding-top: 120px; padding-bottom: 50px; }
+      .hero h1 { font-size: 34px; }
+      .padrao { position: relative; width: 100%; height: 300px; }
+      .janela {
+        position: absolute; right: auto; left: 50%; top: auto; bottom: 30px;
+        width: min(310px, 86%);
+        transform: translateX(-50%) rotate(-4deg);
+      }
+      .janela pre { font-size: 12px; padding: 16px; }
+
+      section { padding: 64px 0; }
+      h2 { font-size: 27px; }
+      .sobre-grid { grid-template-columns: 1fr; gap: 30px; }
+      .tec-linha { grid-template-columns: 1fr; gap: 10px; }
+      .cert-lista { grid-template-columns: 1fr; }
+      .proj-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Início do cabeçalho de navegação -->
+  <header class="topo">
+    <div class="wrap">
+      <a href="#inicio" class="logo">Maurício Araújo</a>
+      <button class="hamb" id="hamb" aria-label="Abrir menu" aria-expanded="false"><i></i></button>
+      <nav class="menu" id="menu">
+        <a href="#sobre">Sobre</a>
+        <a href="#tecnologias">Tecnologias</a>
+        <a href="#certificados">Certificados</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Seção principal de boas-vindas / Hero -->
+    <section class="hero" id="inicio" style="padding:0">
+      <div class="padrao"></div>
+
+      <div class="wrap">
+        <div class="hero-texto">
+          <h1>Olá, eu sou o Maurício e <span>escrevo código.</span></h1>
+          <p>Desenvolvedor em formação, apaixonado por lógica e por criar coisas que funcionam.</p>
+          <p class="inst">Técnico em Informática no <b>IFCE – Campus Fortaleza</b></p>
+          <div class="botoes">
+            <a href="#projetos" class="btn">
+              <svg viewBox="0 0 24 24"><path d="M2 3l20 9-20 9 4-9z"/></svg>
+              Ver projetos
+            </a>
+            <a href="#contato" class="btn vazado">Entrar em contato</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Janela estilizada de código exibida à direita -->
+      <div class="janela" aria-hidden="true">
+        <div class="barra"><i></i><i></i><i></i></div>
+<pre><span class="c"># quem sou eu</span>
+<span class="k">class</span> Mauricio:
+    curso = <span class="s">"Informática"</span>
+    escola = <span class="s">"IFCE"</span>
+
+    <span class="k">def</span> aprender(self):
+        <span class="k">return</span> <span class="s">"todo dia"</span></pre>
+      </div>
+    </section>
+
+    <!-- Seção Sobre mim e dados pessoais -->
+    <section id="sobre" class="escura">
+      <div class="wrap">
+        <h2>Sobre <em>mim</em></h2>
+        <p class="intro">Um pouco de onde eu vim e para onde quero ir.</p>
+        <div class="sobre-grid">
+          <div>
+            <p>Meu nome é Maurício de Sena de Araújo e estou cursando o Técnico em Informática no IFCE, no campus de Fortaleza. Foi lá que comecei a ter contato de verdade com programação e percebi que era isso que eu queria fazer.</p>
+            <p>Gosto muito de lógica de programação e de resolver problemas passo a passo. Quando algo não funciona, fico curioso até descobrir o motivo. Estou sempre estudando linguagens e ferramentas novas e tentando colocar tudo em prática em projetos pequenos.</p>
+            <p>Agora estou atrás do meu primeiro estágio na área de T.I., para aprender com uma equipe de verdade e contribuir no que eu puder.</p>
+          </div>
+          <!-- Coluna contendo a foto e as informações rápidas -->
+          <div class="sobre-foto-col">
+            <img src="foto-github2.jpeg" alt="Foto de Maurício de Sena de Araújo" class="foto-perfil">
+            <ul class="dados">
+              <li><small>Nome</small>Maurício de Sena de Araújo</li>
+              <li><small>Formação</small>Técnico em Informática</li>
+              <li><small>Instituição</small>IFCE – Campus Fortaleza</li>
+              <li><small>Localização</small>Caucaia / Fortaleza, CE</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção de competências técnicas -->
+    <section id="tecnologias">
+      <div class="wrap">
+        <h2>Tecnologias e <em>ferramentas</em></h2>
+        <p class="intro">O que eu venho estudando e usando nos meus projetos.</p>
+
+        <div class="tec-linha">
+          <h3>Front-end</h3>
+          <div class="chips"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>TypeScript</span><span>React</span></div>
+        </div>
+        <div class="tec-linha">
+          <h3>Back-end</h3>
+          <div class="chips"><span>Python</span><span>Java</span><span>PHP</span></div>
+        </div>
+        <div class="tec-linha">
+          <h3>Mobile</h3>
+          <div class="chips"><span>Dart (Flutter)</span><span>Swift</span></div>
+        </div>
+        <div class="tec-linha">
+          <h3>Ferramentas</h3>
+          <div class="chips"><span>Git</span><span>GitHub</span><span>VS Code</span></div>
+        </div>
+
+        <p class="soft"><b>Além do código:</b> lógica de programação, resolução de problemas, aprendizado contínuo e trabalho em equipe.</p>
+      </div>
+    </section>
+
+    <!-- Seção de certificados e emblemas da Cisco -->
+    <section id="certificados" class="clara">
+      <div class="wrap">
+        <div class="cert-topo">
+          <h2>Certificações e <em>conquistas</em></h2>
+          <p class="intro" style="margin-bottom:0">Emblemas de Python que conquistei na Cisco Networking Academy.</p>
+        </div>
+        <ul class="cert-lista">
+          <li>Introdução a Python e Programação<small>Cisco Networking Academy</small></li>
+          <li>Tipos de dados, variáveis e E/S básica<small>Cisco Networking Academy</small></li>
+          <li>Fluxo de controle e listas<small>Cisco Networking Academy</small></li>
+          <li>Coleções, funções e exceções<small>Cisco Networking Academy</small></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Seção de exibição dos projetos do GitHub -->
+    <section id="projetos" class="escura">
+      <div class="wrap">
+        <h2>Meus <em>projetos</em></h2>
+        <p class="intro">Alguns dos meus principais repositórios desenvolvidos durante os estudos.</p>
+
+        <div class="proj-grid">
+          <article class="proj">
+            <h3>Projeto Mousse</h3>
+            <p>Aplicação desenvolvida integrando front-end e back-end para gerenciamento de dados de vendas de doces em instituições de ensino.</p>
+            <div class="tags">React · PHP · SQLite</div>
+            <a href="https://github.com/mauriciodearaujoo01/projeto-mousse.git" target="_blank" rel="noopener">Ver código</a>
+          </article>
+          <article class="proj">
+            <h3>Tratamentos de Dados Covid19</h3>
+            <p>Aplicação desenvolvida utilizando python e algumas bibliotecas como o pandas, para tratamento de dados e geração de gráficos com python.</p>
+            <div class="tags">Python</div>
+            <a href="https://github.com/mauriciodearaujoo01/dados_covidfortaleza.git" target="_blank" rel="noopener">Ver código</a>
+          </article>
+          <article class="proj">
+            <h3>Petshop</h3>
+            <p>Sistema voltado para a gestão de um petshop aplicando os conceitos de Programação Orientada a Objetos.</p>
+            <div class="tags">Java</div>
+            <a href="https://github.com/mauriciodearaujoo01/petshop_poo.git" target="_blank" rel="noopener">Ver código</a>
+          </article>
+          <article class="proj">
+            <h3>Projeto Sorriso do Amanhã</h3>
+            <p>Website institucional e interativo focado na apresentação do projeto social e comunitário.</p>
+            <div class="tags">HTML · CSS · JavaScript</div>
+            <a href="https://github.com/mauriciodearaujoo01/projeto-sorrisodoamanha.git" target="_blank" rel="noopener">Ver código</a>
+          </article>
+        </div>
+
+        <div class="ver-todos">
+          <a href="https://github.com/mauriciodearaujoo01?tab=repositories" target="_blank" rel="noopener" class="btn vazado">Ver todos no GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção de contato e redes sociais -->
+    <section id="contato" class="contato">
+      <div class="wrap">
+        <h2>Vamos <em>conversar?</em></h2>
+        <p class="intro">Se você tem uma vaga de estágio ou só quer trocar uma ideia sobre tecnologia, me chama.</p>
+        <div class="botoes">
+          <a class="btn" href="mailto:mauricio.dearaujoo01@gmail.com">
+            <svg viewBox="0 0 24 24"><path d="M2 3l20 9-20 9 4-9z"/></svg>E-mail
+          </a>
+          <a class="btn vazado" href="https://api.whatsapp.com/send/?phone=5585989647622&text=Fala%2C+dev%21+Gostei+da+sua+p%C3%A1gina%2C+vamos+bater+um+papo%3F&type=phone_number&app_absent=0" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn vazado" href="https://github.com/mauriciodearaujoo01" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn vazado" href="https://www.linkedin.com/in/mauriciodearaujoo" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Rodapé do site -->
+  <footer>
+    © <span id="ano">2026</span> Maurício de Sena de Araújo. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    // Lógica para abrir e fechar o menu no celular
+    var hamb = document.getElementById('hamb');
+    var menu = document.getElementById('menu');
+
+    function alternar(abrir) {
+      menu.classList.toggle('aberto', abrir);
+      hamb.classList.toggle('aberto', abrir);
+      hamb.setAttribute('aria-expanded', abrir);
+    }
+
+    hamb.addEventListener('click', function () {
+      alternar(!menu.classList.contains('aberto'));
+    });
+
+    // Fecha o menu automaticamente quando o usuário clica em alguma seção
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { alternar(false); });
+    });
+
+    // Atualiza automaticamente o ano atual lá no rodapé
+    document.getElementById('ano').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
