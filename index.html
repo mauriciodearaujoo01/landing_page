@@ -16,6 +16,9 @@
       --ciano: #17b8e8;
       --branco: #ffffff;
       --texto-claro: #cfd9ff;
+      --texto-escuro: #12205f;
+      --texto-medio: #4a5894;
+      --fundo-claro: #eef2ff;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,10 +30,13 @@
       background: var(--azul);
       color: var(--branco);
       line-height: 1.6;
+      overflow-x: hidden;
+      overflow-wrap: break-word;
     }
 
     a { color: inherit; text-decoration: none; }
     ul { list-style: none; }
+    img { max-width: 100%; display: block; }
     button { font: inherit; background: none; border: 0; color: inherit; cursor: pointer; }
 
     .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
@@ -55,13 +61,14 @@
       padding: 6px 20px;
       font-size: 14px;
       font-weight: 600;
+      white-space: nowrap;
     }
     .menu { display: flex; gap: 34px; font-size: 15px; font-weight: 600; }
     .menu a { padding: 4px 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
     .menu a:hover { color: var(--ciano); border-color: var(--ciano); }
 
     /* Menu hambúrguer para mobile */
-    .hamb { display: none; width: 40px; height: 40px; position: relative; }
+    .hamb { display: none; width: 40px; height: 40px; position: relative; flex-shrink: 0; }
     .hamb i, .hamb i::before, .hamb i::after {
       content: ""; position: absolute; left: 8px; width: 24px; height: 2px; background: #fff;
       transition: transform .25s, top .25s;
@@ -82,17 +89,8 @@
       overflow: hidden;
     }
 
-    .padrao {
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      width: 38%;
-      background-color: var(--azul);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M60 0A60 60 0 0 1 0 60' stroke='%2317b8e8' stroke-width='24' fill='none'/%3E%3Cpath d='M60 120A60 60 0 0 1 120 60' stroke='%23ffffff' stroke-width='24' fill='none'/%3E%3Cpath d='M60 0A60 60 0 0 0 120 60' stroke='%23071a80' stroke-width='24' fill='none'/%3E%3Cpath d='M0 60A60 60 0 0 0 60 120' stroke='%2317b8e8' stroke-width='24' fill='none'/%3E%3C/svg%3E");
-      background-size: 120px 120px;
-    }
-
-    .hero .wrap { position: relative; width: 100%; padding-top: 70px; }
-    .hero-texto { max-width: 470px; position: relative; z-index: 2; }
+    .hero .wrap { position: relative; z-index: 2; width: 100%; padding-top: 70px; }
+    .hero-texto { max-width: 470px; }
 
     .hero h1 { font-size: 46px; line-height: 1.15; font-weight: 700; margin-bottom: 20px; }
     .hero h1 span { color: var(--ciano); display: block; }
@@ -102,7 +100,7 @@
 
     .botoes { display: flex; gap: 12px; flex-wrap: wrap; }
     .btn {
-      display: inline-flex; align-items: center; gap: 8px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       background: var(--ciano); color: #fff;
       font-size: 14px; font-weight: 600;
       padding: 10px 24px; border-radius: 999px;
@@ -114,27 +112,39 @@
     .btn.vazado { background: transparent; }
     .btn.vazado:hover { background: #fff; }
 
+    /* Lado direito do hero: padrão geométrico + janela de código */
+    .hero-visual { position: absolute; inset: 0; pointer-events: none; }
+
+    .padrao {
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 38%;
+      background-color: var(--azul);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M60 0A60 60 0 0 1 0 60' stroke='%2317b8e8' stroke-width='24' fill='none'/%3E%3Cpath d='M60 120A60 60 0 0 1 120 60' stroke='%23ffffff' stroke-width='24' fill='none'/%3E%3Cpath d='M60 0A60 60 0 0 0 120 60' stroke='%23071a80' stroke-width='24' fill='none'/%3E%3Cpath d='M0 60A60 60 0 0 0 60 120' stroke='%2317b8e8' stroke-width='24' fill='none'/%3E%3C/svg%3E");
+      background-size: 120px 120px;
+    }
+
     /* Janela simulando editor de código */
     .janela {
       position: absolute;
       right: 30px;
       top: 50%;
-      width: 400px;
+      width: 320px;
       transform: translateY(-46%) rotate(-6deg);
       background: #f4f7ff;
       border-radius: 14px;
       box-shadow: 0 25px 50px rgba(3, 10, 70, .55);
       overflow: hidden;
-      z-index: 2;
     }
     .janela .barra { background: var(--azul-escuro); padding: 10px 14px; display: flex; gap: 7px; }
     .janela .barra i { width: 10px; height: 10px; border-radius: 50%; background: var(--ciano); opacity: .8; }
     .janela pre {
       font-family: Consolas, 'Courier New', monospace;
-      font-size: 14px;
+      font-size: 13px;
       color: #1b2559;
-      padding: 22px 24px;
+      padding: 20px 22px;
       line-height: 1.8;
+      overflow: hidden;
     }
     .janela .k { color: #0a2bbd; font-weight: bold; }
     .janela .s { color: #0b8fb8; }
@@ -142,30 +152,31 @@
 
     /* Estilização geral das seções */
     section { padding: 90px 0; }
-    .escura { background: var(--azul-escuro); }
-    .clara { background: #f2f5ff; color: #12205f; }
+    .branca { background: #fff; color: var(--texto-escuro); }
+    .clara { background: var(--fundo-claro); color: var(--texto-escuro); }
 
     h2 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
     h2 em { font-style: normal; color: var(--ciano); }
-    .clara h2 em { color: var(--azul); }
+    .branca h2 em, .clara h2 em { color: var(--azul); }
     .intro { color: var(--texto-claro); margin-bottom: 40px; max-width: 540px; }
-    .clara .intro { color: #4a5894; }
+    .branca .intro, .clara .intro { color: var(--texto-medio); }
 
     /* Configuração do grid da seção Sobre */
     .sobre-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 56px; align-items: start; }
-    .sobre-grid p { color: var(--texto-claro); margin-bottom: 16px; }
+    .sobre-grid > * { min-width: 0; }
+    .sobre-grid p { color: #3d4a85; margin-bottom: 16px; }
     .sobre-foto-col { display: flex; flex-direction: column; gap: 24px; align-items: center; }
     .foto-perfil {
       width: 100%;
       max-width: 260px;
       border-radius: 20px;
       border: 3px solid var(--ciano);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 30px rgba(10, 43, 189, 0.18);
       object-fit: cover;
     }
     .dados { border-left: 3px solid var(--ciano); padding-left: 24px; width: 100%; }
     .dados li { padding: 10px 0; font-size: 15px; }
-    .dados small { display: block; color: var(--ciano); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .dados small { display: block; color: var(--azul); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
 
     /* Tecnologias e conhecimentos */
     .tec-linha {
@@ -173,16 +184,16 @@
       grid-template-columns: 170px 1fr;
       gap: 20px;
       padding: 20px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, .18);
+      border-bottom: 1px solid rgba(255, 255, 255, .25);
       align-items: center;
     }
-    .tec-linha:first-of-type { border-top: 1px solid rgba(255, 255, 255, .18); }
-    .tec-linha h3 { font-size: 17px; color: var(--ciano); }
+    .tec-linha:first-of-type { border-top: 1px solid rgba(255, 255, 255, .25); }
+    .tec-linha h3 { font-size: 17px; color: #fff; }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chips span {
       font-size: 14px; font-weight: 500;
       padding: 5px 16px; border-radius: 999px;
-      background: rgba(255, 255, 255, .1);
+      background: rgba(255, 255, 255, .12);
       transition: background .2s, color .2s;
     }
     .chips span:hover { background: #fff; color: var(--azul); }
@@ -194,12 +205,12 @@
     .cert-lista { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; counter-reset: c; }
     .cert-lista li {
       counter-increment: c;
-      background: #fff;
+      background: var(--fundo-claro);
       border-radius: 12px;
       padding: 18px 20px 18px 66px;
       position: relative;
       font-weight: 500;
-      box-shadow: 0 4px 14px rgba(10, 43, 189, .08);
+      min-width: 0;
       transition: transform .2s;
     }
     .cert-lista li:hover { transform: translateY(-3px); }
@@ -213,21 +224,25 @@
     .cert-lista small { display: block; font-weight: 400; color: #6a76ab; font-size: 13px; }
 
     /* Cards de projetos do portfólio */
-    .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
     .proj {
-      background: var(--azul);
+      background: #fff;
+      border: 1px solid #dbe3ff;
       border-radius: 14px;
       padding: 26px;
       display: flex; flex-direction: column;
+      min-width: 0;
       transition: transform .2s, box-shadow .2s;
     }
-    .proj:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(0, 0, 0, .3); }
-    .proj h3 { font-size: 19px; margin-bottom: 10px; }
-    .proj p { color: var(--texto-claro); font-size: 14px; flex: 1; margin-bottom: 16px; }
-    .proj .tags { font-size: 13px; color: var(--ciano); font-weight: 600; margin-bottom: 18px; }
-    .proj a { font-size: 14px; font-weight: 600; border-bottom: 2px solid var(--ciano); align-self: flex-start; }
+    .proj:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(10, 43, 189, .15); }
+    .proj h3 { font-size: 19px; margin-bottom: 10px; color: var(--azul-escuro); }
+    .proj p { color: var(--texto-medio); font-size: 14px; flex: 1; margin-bottom: 16px; }
+    .proj .tags { font-size: 13px; color: var(--azul); font-weight: 600; margin-bottom: 18px; }
+    .proj a { font-size: 14px; font-weight: 600; color: var(--azul); border-bottom: 2px solid var(--ciano); align-self: flex-start; }
     .proj a:hover { color: var(--ciano); }
     .ver-todos { margin-top: 36px; }
+    .clara .btn.vazado { color: var(--azul); border-color: var(--azul); }
+    .clara .btn.vazado:hover { background: var(--azul); color: #fff; }
 
     /* Área de contato */
     .contato { text-align: center; }
@@ -237,13 +252,13 @@
     /* Rodapé da página */
     footer { background: var(--azul-escuro); text-align: center; padding: 22px 0; font-size: 13px; color: var(--texto-claro); border-top: 1px solid rgba(255,255,255,.12); }
 
-    /* Responsividade para telas menores */
-    @media (max-width: 960px) {
-      .janela { width: 320px; right: 10px; }
-      .hero h1 { font-size: 38px; }
+    /* Telas médias (tablets e notebooks pequenos) */
+    @media (max-width: 1100px) {
+      .hero h1 { font-size: 40px; }
     }
 
-    @media (max-width: 800px) {
+    /* Celulares e tablets: o visual sai de trás do texto e vai para baixo dele */
+    @media (max-width: 900px) {
       .hamb { display: block; }
       .menu {
         position: fixed; top: 70px; left: 0; right: 0;
@@ -254,23 +269,42 @@
       .menu.aberto { max-height: 320px; }
       .menu a { display: block; padding: 15px 24px; border: 0; }
 
-      .hero { display: block; padding-bottom: 0; }
-      .hero .wrap { padding-top: 120px; padding-bottom: 50px; }
-      .hero h1 { font-size: 34px; }
-      .padrao { position: relative; width: 100%; height: 300px; }
+      .hero { display: block; min-height: 0; }
+      .hero .wrap { padding-top: 110px; padding-bottom: 44px; }
+      .hero-texto { max-width: 560px; }
+      .hero h1 { font-size: 36px; }
+
+      .hero-visual { position: relative; inset: auto; height: 320px; }
+      .padrao { left: 0; width: 100%; }
       .janela {
-        position: absolute; right: auto; left: 50%; top: auto; bottom: 30px;
-        width: min(310px, 86%);
-        transform: translateX(-50%) rotate(-4deg);
+        right: auto; left: 50%; top: 50%;
+        width: min(320px, 86%);
+        transform: translate(-50%, -50%) rotate(-4deg);
       }
-      .janela pre { font-size: 12px; padding: 16px; }
 
       section { padding: 64px 0; }
       h2 { font-size: 27px; }
-      .sobre-grid { grid-template-columns: 1fr; gap: 30px; }
+      .sobre-grid { grid-template-columns: 1fr; gap: 32px; }
+      .foto-perfil { max-width: 220px; }
       .tec-linha { grid-template-columns: 1fr; gap: 10px; }
       .cert-lista { grid-template-columns: 1fr; }
       .proj-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Celulares pequenos */
+    @media (max-width: 480px) {
+      .wrap { padding: 0 18px; }
+      .logo { font-size: 13px; padding: 5px 14px; }
+      .hero .wrap { padding-top: 100px; }
+      .hero h1 { font-size: 29px; }
+      .hero p { font-size: 16px; }
+      .botoes .btn { flex: 1 1 100%; }
+      .hero-visual { height: 280px; }
+      .janela pre { font-size: 11.5px; padding: 14px 16px; }
+      h2 { font-size: 24px; }
+      .cert-lista li { padding: 16px 16px 16px 60px; font-size: 15px; }
+      .cert-lista li::before { left: 14px; width: 32px; height: 32px; }
+      .proj { padding: 22px; }
     }
   </style>
 </head>
@@ -294,8 +328,6 @@
   <main>
     <!-- Seção principal de boas-vindas / Hero -->
     <section class="hero" id="inicio" style="padding:0">
-      <div class="padrao"></div>
-
       <div class="wrap">
         <div class="hero-texto">
           <h1>Olá, eu sou o Maurício e <span>escrevo código.</span></h1>
@@ -311,9 +343,11 @@
         </div>
       </div>
 
-      <!-- Janela estilizada de código exibida à direita -->
-      <div class="janela" aria-hidden="true">
-        <div class="barra"><i></i><i></i><i></i></div>
+      <!-- Lado visual: padrão geométrico e janela de código -->
+      <div class="hero-visual" aria-hidden="true">
+        <div class="padrao"></div>
+        <div class="janela">
+          <div class="barra"><i></i><i></i><i></i></div>
 <pre><span class="c"># quem sou eu</span>
 <span class="k">class</span> Mauricio:
     curso = <span class="s">"Informática"</span>
@@ -321,11 +355,12 @@
 
     <span class="k">def</span> aprender(self):
         <span class="k">return</span> <span class="s">"todo dia"</span></pre>
+        </div>
       </div>
     </section>
 
     <!-- Seção Sobre mim e dados pessoais -->
-    <section id="sobre" class="escura">
+    <section id="sobre" class="branca">
       <div class="wrap">
         <h2>Sobre <em>mim</em></h2>
         <p class="intro">Um pouco de onde eu vim e para onde quero ir.</p>
@@ -377,7 +412,7 @@
     </section>
 
     <!-- Seção de certificados e emblemas da Cisco -->
-    <section id="certificados" class="clara">
+    <section id="certificados" class="branca">
       <div class="wrap">
         <div class="cert-topo">
           <h2>Certificações e <em>conquistas</em></h2>
@@ -393,7 +428,7 @@
     </section>
 
     <!-- Seção de exibição dos projetos do GitHub -->
-    <section id="projetos" class="escura">
+    <section id="projetos" class="clara">
       <div class="wrap">
         <h2>Meus <em>projetos</em></h2>
         <p class="intro">Alguns dos meus principais repositórios desenvolvidos durante os estudos.</p>
